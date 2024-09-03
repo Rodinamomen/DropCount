@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">DropCount</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="water_reminder_channel_name">Water Reminder</string>
+    <string name="water_reminder_channel_description">Sends reminders every hour to drink water</string>
+    <string name="notification_title">Time to Drink Water</string>
+    <string name="notification_content_text">Do not forget to drink water</string>
+
+</resources>
