@@ -1,10 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">DropCount</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="water_reminder_channel_name">Water Reminder</string>
-    <string name="water_reminder_channel_description">Sends reminders every hour to drink water</string>
-    <string name="notification_title">Time to Drink Water</string>
-    <string name="notification_content_text">Do not forget to drink water</string>
-
+    <string name="water_reminder_channel_name" translatable="false">Water Reminder</string>
+    <string name="water_reminder_channel_description" translatable="false">Sends reminders every hour to drink water</string>
+    <string name="notification_title" translatable="false">Time to Drink Water</string>
+    <string name="notification_content_text" translatable="false">Do not forget to drink water</string>
+    <string name="four_ml" translatable="false">400Ml</string>
+    <string name="three_ml" translatable="false">300Ml</string>
+    <string name="one_ml" translatable="false">100Ml</string>
+    <string name="daily_water_intake" translatable="false">Daily Water Intake</string>
+    <string name="hourly_reminder" translatable="false">Hourly reminder</string>
+    <string name="no_water_logged" translatable="false">No water logged</string>
+    <string name="press_plus">Press +</string>
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DropCount</string>
+    <string name="water_reminder_channel_name">تذكير شرب الماء</string>
+    <string name="water_reminder_channel_description">يرسل تذكيرات كل ساعة لشرب الماء</string>
+    <string name="notification_title">حان وقت شرب الماء</string>
+    <string name="notification_content_text">لا تنسَ شرب الماء</string>
+    <string name="four_ml">400 مل</string>
+    <string name="three_ml">300 مل</string>
+    <string name="one_ml">100 مل</string>
+    <string name="daily_water_intake">كمية الماء اليومية</string>
+    <string name="hourly_reminder">تذكير كل ساعة</string>
+    <string name="no_water_logged">لم يتم تسجيل شرب ماء</string>
+    <string name="press_plus">اضغط على +</string>
+</resources>
