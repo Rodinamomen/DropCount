@@ -107,7 +107,6 @@ companion object{
             }
             val adapter = RecordsAdapter(it)
             binding.rvRecords.adapter = adapter
-
         }
 
         binding.rvRecords.layoutManager= LinearLayoutManager(requireContext(),
@@ -138,7 +137,7 @@ companion object{
                 myDialog.dismiss()
             }
         }
-        binding.ivAddWater.setOnClickListener {
+        binding.btnAddWater.setOnClickListener {
             var currentTotal = binding.tvTotal.text.toString().toInt()
             when (currentDrawableResId) {
                 R.drawable.ic_cup100 -> {
@@ -195,9 +194,11 @@ companion object{
         editor.putString("total", total).apply()
     }
     private fun insertNewRecord(recordIntakeAmount:Int){
-        val formattedDate = SimpleDateFormat("h:mm a MMM dd", Locale.getDefault()).format(Date())
-        val newRecord = Record(recordDate = formattedDate, recordIntakeAmount = recordIntakeAmount)
+        val newRecord = Record(recordDate = formatDate(), recordIntakeAmount = recordIntakeAmount)
         viewmodel.insertRecord(newRecord)
+    }
+    private fun formatDate(): String{
+        return SimpleDateFormat("h:mm a MMM dd", Locale.getDefault()).format(Date())
     }
     private fun startPeriodicNotificationWorker(){
         val constraints= Constraints.Builder().setRequiredNetworkType(NetworkType.NOT_REQUIRED).build()
@@ -243,10 +244,7 @@ companion object{
         val trackerViewModelFactory = TrackerViewModelFactory(TrackerRepoImp(LocalDatabaseImp(context)))
         viewmodel = ViewModelProvider(this, trackerViewModelFactory).get(TrackerViewModel::class.java)
     }
-   private fun getCurrentDate(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return dateFormat.format(Date())
-    }
+
    private fun getLastOpenedDate(context: Context): String? {
         val sharedPreferences = context.getSharedPreferences("DatePreferences", Context.MODE_PRIVATE)
         return sharedPreferences.getString("lastOpenedDate", null)
@@ -254,12 +252,12 @@ companion object{
    private fun saveCurrentDate(context: Context) {
         val sharedPreferences = context.getSharedPreferences("DatePreferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        val currentDate = getCurrentDate()
+        val currentDate = SimpleDateFormat("dd", Locale.getDefault()).format(Date())
         editor.putString("lastOpenedDate", currentDate)
         editor.apply()
     }
     private fun resetTotal(sharedPreferences: SharedPreferences){
-        if (getLastOpenedDate(requireContext()) != getCurrentDate()) {
+        if (getLastOpenedDate(requireContext()) != SimpleDateFormat("dd", Locale.getDefault()).format(Date())) {
             binding.tvTotal.text="0"
             updateProgressBar(0)
             saveCurrentDate(requireContext())
