@@ -1,27 +1,32 @@
 package com.example.stayhydratedapp.tracker.view
 
 import android.app.Dialog
+import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Visibility
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.example.stayhydratedapp.NotificationManger
@@ -39,56 +44,51 @@ import nl.dionsegijn.konfetti.core.emitter.Emitter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate
 import java.util.concurrent.TimeUnit
 
 
 class TrackerFragment : Fragment() {
+    private lateinit var settingsDialog: View
+    private lateinit var mySettingsDialog: Dialog
+    private lateinit var dialog: View
+    private lateinit var myDialog: Dialog
    private val dailyWaterGoal = 2430
     private lateinit var viewmodel : TrackerViewModel
 companion object{
     val KEY = "total_pref"
 }
- /*   private val quotes = listOf(
-        "I feel like a fish out of water.",
-        "Sometimes the only way to truly understand someone is to see things from their perspective.",
-        "I don’t know why I have this feeling, but I feel like I’m meant for something bigger.",
-        "Sometimes you have to go through the rough waters to find the calm.",
-        "It’s not about how many times you get knocked down; it’s about how many times you get back up.",
-        "I used to think that the only way to move forward was to push through, but now I see that sometimes you have to go with the flow.",
-        "Every wave has its crest and its trough, just like every emotion has its highs and lows.",
-        "When the waves get too rough, remember to find your inner calm.",
-        "You can’t control the tide, but you can control how you ride it.",
-        "We all have our own currents to navigate, but that doesn’t mean we have to do it alone.",
-        "Sometimes, the biggest battles are fought within ourselves.",
-        "The ocean doesn’t stop for anyone, and neither should you.",
-        "There’s beauty in every wave, even if it’s not immediately apparent.",
-        "It’s okay to be vulnerable; it’s a part of being human.",
-        "Embracing the storm is the only way to truly appreciate the calm."
-    )*/
 
-  //  private var currentIndex = 0
     private lateinit var binding: FragmentTrackerBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding= FragmentTrackerBinding.inflate(inflater, container, false)
-
+        val toolBar = binding.topAppBar
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolBar)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         gettingViewModelReady(requireContext())
         viewmodel.getRecords()
         val sharedPreferences = createSharedPreferences()
+    settingsDialog = layoutInflater.inflate(R.layout.settings_dialog, null)
+        mySettingsDialog = Dialog(requireContext())
+         dialog = layoutInflater.inflate(R.layout.cups_dialog, null)
+         myDialog = Dialog(requireContext())
+        val cup100 = dialog.findViewById<ImageView>(R.id.iv_100ml)
+        val cup300 = dialog.findViewById<ImageView>(R.id.iv_300ml)
+        val cup400 = dialog.findViewById<ImageView>(R.id.iv_400ml)
+        val darkModeSwitch = settingsDialog.findViewById<Switch>(R.id.switch_dark_mode)
+        val arabicButton = settingsDialog.findViewById<Button>(R.id.btn_arabic)
+        val englishButton = settingsDialog.findViewById<Button>(R.id.btn_english)
         getSavedTotal(sharedPreferences)?.toInt()?.let { updateProgressBar(it) }
         var currentDrawableResId: Int = R.drawable.ic_cup100
-  //      binding.tvQuote.text= quotes[currentIndex]
-  /*      binding.fbNextQuote.setOnClickListener {
-            currentIndex = (currentIndex + 1) % quotes.size
-            binding.tvQuote.text = quotes[currentIndex]
-        }*/
-
         viewmodel.recordInserted.observe(requireActivity()){
             if(it == true){
                viewmodel.getRecords()
@@ -99,28 +99,31 @@ companion object{
                 binding.rvRecords.visibility = View.GONE
                 binding.ivNoRecord.visibility= View.VISIBLE
                 binding.tvNoRecord.visibility= View.VISIBLE
+                binding.tvPressPlus.visibility=View.VISIBLE
 
             }else{
                 binding.rvRecords.visibility= View.VISIBLE
                 binding.ivNoRecord.visibility= View.GONE
                 binding.tvNoRecord.visibility= View.GONE
+                binding.tvPressPlus.visibility=View.GONE
             }
             val adapter = RecordsAdapter(it)
             binding.rvRecords.adapter = adapter
         }
-
+        arabicButton.setOnClickListener {
+            Toast.makeText(requireContext(), "  Arabic", Toast.LENGTH_SHORT).show()
+        }
+        englishButton.setOnClickListener {
+            Toast.makeText(requireContext(),"English", Toast.LENGTH_SHORT).show()
+        }
         binding.rvRecords.layoutManager= LinearLayoutManager(requireContext(),
             RecyclerView.VERTICAL,false)
         binding.ivCup.setOnClickListener {
-            val dialog = layoutInflater.inflate(R.layout.cups_dialog, null)
-            val myDialog = Dialog(requireContext())
             myDialog.setContentView(dialog)
             myDialog.setCancelable(true)
             myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             myDialog.show()
-            val cup100 = dialog.findViewById<ImageView>(R.id.iv_100ml)
-            val cup300 = dialog.findViewById<ImageView>(R.id.iv_300ml)
-            val cup400 = dialog.findViewById<ImageView>(R.id.iv_400ml)
+
             cup100.setOnClickListener {
                 binding.ivWaterCup.setImageResource(R.drawable.ic_cup100)
                 currentDrawableResId = R.drawable.ic_cup100
@@ -170,13 +173,29 @@ companion object{
                 showAnimation()
             }
         }
-        binding.switchWaterReminder2.isChecked= getSwitchState()
-        binding.switchWaterReminder2.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchWaterReminder2.isChecked= getNotificationSwitchState()
+        darkModeSwitch.isChecked = getDarkModeSwitchState()
+        darkModeSwitch.setOnCheckedChangeListener{
+                _, isChecked ->
             if(isChecked){
-                saveSwitchState(true)
+                saveDarkModeSwitchState(true)
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                mySettingsDialog.dismiss()
+
+            }else{
+                saveDarkModeSwitchState(false)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                mySettingsDialog.dismiss()
+            }
+        }
+        binding.switchWaterReminder2.setOnCheckedChangeListener {
+                _, isChecked ->
+            if(isChecked){
+                saveNotificationSwitchState(true)
                 startPeriodicNotificationWorker()
             }else{
-                saveSwitchState(false)
+                saveNotificationSwitchState(false)
                 Toast.makeText(requireContext(), "You disabled notifications", Toast.LENGTH_SHORT).show()
                 cancelPeriodicNotificationWorker()
             }
@@ -210,16 +229,27 @@ companion object{
     private fun cancelPeriodicNotificationWorker(){
         WorkManager.getInstance(requireContext()).cancelAllWorkByTag("Notification_Tag")
     }
-    private fun saveSwitchState(isEnabled: Boolean) {
-        val sharedPreferences = requireContext().getSharedPreferences("switch_prefs", MODE_PRIVATE)
+    private fun saveNotificationSwitchState(isEnabled: Boolean) {
+        val sharedPreferences = requireContext().getSharedPreferences("notification_switch_prefs", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putBoolean("switch_state", isEnabled)
         editor.apply()
     }
-    private fun getSwitchState(): Boolean {
-        val sharedPreferences = requireContext().getSharedPreferences("switch_prefs",  MODE_PRIVATE)
-        return sharedPreferences.getBoolean("switch_state", false)
+    private fun getNotificationSwitchState(): Boolean {
+        val sharedPreferences = requireContext().getSharedPreferences("notification_switch_prefs",  MODE_PRIVATE)
+        return sharedPreferences.getBoolean("notification_switch_state", false)
     }
+    private fun getDarkModeSwitchState(): Boolean {
+        val sharedPreferences = requireContext().getSharedPreferences("dark_mode_switch_prefs",  MODE_PRIVATE)
+        return sharedPreferences.getBoolean("dark_mode_switch_state", false)
+    }
+    private fun saveDarkModeSwitchState(isEnabled: Boolean) {
+        val sharedPreferences = requireContext().getSharedPreferences("dark_mode_switch_prefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("dark_mode_switch_state", isEnabled)
+        editor.apply()
+    }
+
     private fun showAnimation() {
         val colors = listOf(
             ContextCompat.getColor(requireContext(), R.color.md_theme_primary),
@@ -270,5 +300,23 @@ companion object{
         super.onResume()
         val sharedPreferences = createSharedPreferences()
         resetTotal(sharedPreferences)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.app_bar_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.ic_settings -> {
+                mySettingsDialog.setContentView(settingsDialog)
+                mySettingsDialog.setCancelable(true)
+                mySettingsDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                mySettingsDialog.show()}
+            else -> Log.d("menu", "onOptionsItemSelected:noting  ")
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
