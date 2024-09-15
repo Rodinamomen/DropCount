@@ -85,8 +85,6 @@ companion object{
         val cup300 = dialog.findViewById<ImageView>(R.id.iv_300ml)
         val cup400 = dialog.findViewById<ImageView>(R.id.iv_400ml)
         val darkModeSwitch = settingsDialog.findViewById<Switch>(R.id.switch_dark_mode)
-        val arabicButton = settingsDialog.findViewById<Button>(R.id.btn_arabic)
-        val englishButton = settingsDialog.findViewById<Button>(R.id.btn_english)
         getSavedTotal(sharedPreferences)?.toInt()?.let { updateProgressBar(it) }
         var currentDrawableResId: Int = R.drawable.ic_cup100
         viewmodel.recordInserted.observe(requireActivity()){
@@ -109,12 +107,6 @@ companion object{
             }
             val adapter = RecordsAdapter(it)
             binding.rvRecords.adapter = adapter
-        }
-        arabicButton.setOnClickListener {
-            Toast.makeText(requireContext(), "  Arabic", Toast.LENGTH_SHORT).show()
-        }
-        englishButton.setOnClickListener {
-            Toast.makeText(requireContext(),"English", Toast.LENGTH_SHORT).show()
         }
         binding.rvRecords.layoutManager= LinearLayoutManager(requireContext(),
             RecyclerView.VERTICAL,false)
