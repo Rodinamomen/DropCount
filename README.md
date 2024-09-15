@@ -44,15 +44,14 @@ Here’s a walkthrough of **DropCount** showing both light and dark themes.
 |:-----------:|:----------:|
 | <img src="https://github.com/user-attachments/assets/273c2ccf-dc7c-4e6d-8e89-80d530b44375" width="300"/> | <img src="https://github.com/user-attachments/assets/0ebcf920-0283-447d-8990-935df3e6894a" width="300"/> |
 
-This screen allows the user to choose the size of the water cup they want to log. Both light and dark theme views are shown for a comparison of the user interface.
-
+This screen allows the user to choose the size of the water cup they want to log.
 ### 3. After Logging Water Intake:
 
 | Light Theme | Dark Theme |
 |:-----------:|:----------:|
 | <img src="https://github.com/user-attachments/assets/a78ef33f-86cb-4228-b042-b34d866268c3" width="300"/> | <img src="https://github.com/user-attachments/assets/dec92b4f-ae21-4e60-b0dc-38c059faf3fb" width="300"/> |
 
-This screen displays the app after the user has logged their water intake. The current intake is reflected in both the light and dark themes, showing progress toward the daily hydration goal.
+This screen displays the app after the user has logged their water intake, showing progress toward the daily hydration goal.
 
 ### 4. Enabling Hourly Reminder Notification:
 
@@ -60,7 +59,7 @@ This screen displays the app after the user has logged their water intake. The c
 |:-----------:|:----------:|
 | <img src="https://github.com/user-attachments/assets/cc5bebaf-4caf-4901-b721-6b77d29b26e0" width="300"/> | <img src="https://github.com/user-attachments/assets/b6c2f1a5-715d-483a-ac34-ef46520c1827" width="300"/> |
 
-This screen demonstrates the process of enabling the hourly water intake reminder notification. The user can activate this feature to receive periodic reminders to log their water intake. Both light and dark theme variations are shown.
+This screen demonstrates the process of enabling the hourly water intake reminder notification. The user can activate this feature to receive periodic reminders to log their water intake.
 
 ### 5. Disabling Hourly Reminder Notification:
 
@@ -68,7 +67,7 @@ This screen demonstrates the process of enabling the hourly water intake reminde
 |:-----------:|:----------:|
 | <img src="https://github.com/user-attachments/assets/9eb1293e-b2ef-447d-a623-0fcd3e28b75e" width="300"/> | <img src="https://github.com/user-attachments/assets/509e47f0-ebd3-47fd-b08b-f15d09a1295e" width="300"/> |
 
-This screen shows the process of disabling the hourly reminder notification. The user can turn off notifications to stop receiving periodic reminders about their water intake. Both light and dark themes are presented for comparison.
+This screen shows the process of disabling the hourly reminder notification. The user can turn off notifications to stop receiving periodic reminders about their water intake.
 
 ### 6. Congratulations for Reaching Daily Intake Target:
 
@@ -76,8 +75,7 @@ This screen shows the process of disabling the hourly reminder notification. The
 |:-----------:|:----------:|
 | <img src="https://github.com/user-attachments/assets/8903791f-f8ef-42ca-8b89-fcfb28f304cc" width="300"/> | <img src="https://github.com/user-attachments/assets/9759386b-c822-4596-9fc9-ffabeb539758" width="300"/> |
 
-This screen celebrates the user for achieving their daily water intake goal. A congratulatory message is displayed along with animations to mark the accomplishment. Shown in both light and dark themes for comparison.
-
+This screen celebrates the user for achieving their daily water intake goal. A congratulatory message is displayed along with animations to mark the accomplishment.
 ## Technologies Used
 
 - **Shared Preferences:** Used to store user preferences such as theme selection and notification settings.
